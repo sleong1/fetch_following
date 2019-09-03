@@ -13,9 +13,20 @@ class Motion(object):
         self.laser_readings = None
         self.cmd_vel_pub = rospy.Publisher('/move_base/goal', MoveBaseActionGoal(), queue_size=1)
         self.laser_sub = rospy.Subscriber('/base_scan', LaserScan, self.laser_cb, queue_size=1)
+        self.human_sub = rospy.Subscriber('/human_position', PoseStamped, self.human_detection, queue_size=1)
+        self.human_position = None
 
     def laser_cb(self, msg):
+        # For implementing safety
         self.laser_readings = msg
+
+    def human_detection(self, msg):
+        vel = self.convert_to_vel(msg)
+        self.publish_cmd_vel(vel)
+
+
+    def convert_to_vel(self, pose):
+        pass
 
     def publish_cmd_vel(self, msg=None):
         # publish cmd_vel messages
@@ -23,14 +34,13 @@ class Motion(object):
             msg = Twist()
         self.cmd_vel_pub.publish(msg)
 
-    def do_something(self):
-        self.publish_cmd_vel(Twist())
-
     def main(self):
         while not rospy.is_shutdown():
+            # Will wait for messages forever
+            rospy.spin()
             # Will publish empty cmd_vel messages every second forever
-            self.do_something()
-            rospy.sleep(1.0)
+            # self.publish_cmd_vel(Twist())
+            # rospy.sleep(1.0)
 
 
 if __name__ == "__main__":

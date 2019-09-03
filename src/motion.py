@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+from math import sqrt
+
 import rospy
 from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import PoseStamped, Twist
@@ -11,21 +13,27 @@ class Motion(object):
         if not rospy.is_initialized():
             rospy.init_node('fetch_motion')
         self.laser_readings = None
-        self.cmd_vel_pub = rospy.Publisher('/move_base/goal', MoveBaseActionGoal(), queue_size=1)
+        self.cmd_vel_pub = rospy.Publisher('/base_controller/command', Twist(), queue_size=1)
         self.laser_sub = rospy.Subscriber('/base_scan', LaserScan, self.laser_cb, queue_size=1)
-        self.human_sub = rospy.Subscriber('/human_position', PoseStamped, self.human_detection, queue_size=1)
-        self.human_position = None
+        self.human_sub = rospy.Subscriber('/aruco_single/pose', PoseStamped, self.human_detection, queue_size=1)
 
     def laser_cb(self, msg):
         # For implementing safety
         self.laser_readings = msg
 
     def human_detection(self, msg):
-        vel = self.convert_to_vel(msg)
+        vel = self.convert_to_vel(msg.pose)
         self.publish_cmd_vel(vel)
 
 
+    def get_distance(self, x1, y1, x2=0, y2=0):
+        return sqrt((x2 - x1)**2 + (y2 - y1)**2)
+
     def convert_to_vel(self, pose):
+        # Get the relative distance from the robot to the human
+        # Use it for speed scaling
+        distance = self.get_distance(pose.position.x, pose.position.y)
+        
         pass
 
     def publish_cmd_vel(self, msg=None):

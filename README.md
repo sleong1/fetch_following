@@ -1,4 +1,12 @@
 # fetch_following
 Repository for 41014 Sensors and Control project to control a fetch robot to follow a human.
 
-This branch is the dev branch. aka the experimental branch
+# General reminders
+
+to be added...
+
+# Installations
+
+	sudo apt-get install ros-kinetic-aruco-ros
+
+	sudo apt-get install ros-kinetic-aruco-msgs

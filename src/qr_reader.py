@@ -32,7 +32,7 @@ class QRReader(object):
             print(e)
         else:
             # Save your OpenCV2 image as a jpeg 
-            cv2.imwrite('data/camera_image.jpeg', cv2_img)
+            cv2.imwrite('data/iamge.jpeg', cv2_img)
 
     def main(self):
         rospy.init_node('image_listener')

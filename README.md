@@ -37,6 +37,12 @@ change the variables depending on your specs. If you're using the grid in the ca
 1. --size 8x6 <- this being the number of squares being detected
 2. --square 0.021 <- this being the size of the squares in meters.
 
+Take enough angles till the 'calibrate' button lights up and when you're think you have enough samples. 
+
+Click the 'calibrate button'. ***Note:*** Be patient. This may take a while and the time of progressing is dependent on your machine. 
+
+Once it's done, click 'save' to save. If you want your camera to use the same calibration settings, click 'commit'. Good! now you have a yaml file that has all your calibrations saved in.
+
 # General reminders (mainly for myself =3)
 A Dummy's Guide to things
 ---

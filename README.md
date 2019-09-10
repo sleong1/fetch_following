@@ -84,7 +84,7 @@ Step 1. Open a new terminal and source it!
 
 Step 2. launch the aruco:
 
-    roslaunch aruco_marker_finder.launch markerId:=701 markerSize:=0.1
+    roslaunch fetch_following aruco_marker_finder.launch markerId:=701 markerSize:=0.1
 
 Change 'markerId:=701 markerSize:=0.1' to match the specs of your artag or change this directly in the launch. For this project, it has already been changed.
 
@@ -132,5 +132,5 @@ Terminal 1:
     roslaunch fetch_following usb_cam_stream_publisher.launch 
 
 Terminal 2:
-    
-    roslaunch aruco_marker_finder.launch markerId:=701 markerSize:=0.1
+
+    roslaunch fetch_following aruco_marker_finder.launch 

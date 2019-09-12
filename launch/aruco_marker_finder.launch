@@ -8,6 +8,8 @@
 	<arg name="corner_refinement" default="LINES" /> <!-- NONE, HARRIS, LINES, SUBPIX -->
 
 
+    <include file="$(find fetch_following)/launch/usb_cam_stream_publisher.launch"/>
+
 	<node pkg="aruco_ros" type="single" name="aruco_single">
 		<remap from="/camera_info" to="/usb_cam/camera_info" />
 		<remap from="/image" to="/usb_cam/image_raw" />

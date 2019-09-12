@@ -47,6 +47,37 @@ Extra documention for camera calibration:
 
 http://wiki.ros.org/camera_calibration/Tutorials/MonocularCalibration
 
+Camera calibration yaml
+---
+If you don't want to calibrate and you trust mine, here's the yaml for the usb camera used in this project.
+
+go to:
+
+    cd .ros/camera_info
+
+And make a file called 'head_camera.yaml' and copy the text below:
+
+    image_width: 640
+    image_height: 480
+    camera_name: head_camera
+    camera_matrix:
+      rows: 3
+      cols: 3
+      data: [1965.198759922371, 0, 162.1142583645783, 0, 1968.887033831632, 393.7339989757747, 0, 0, 1]
+    distortion_model: plumb_bob
+    distortion_coefficients:
+      rows: 1
+      cols: 5
+      data: [0.05352954540529466, 0.3532778332300517, 0.02565579611337958, -0.04127488682464868, 0]
+    rectification_matrix:
+      rows: 3
+      cols: 3
+      data: [1, 0, 0, 0, 1, 0, 0, 0, 1]
+    projection_matrix:
+      rows: 3
+      cols: 4
+      data: [1940.791625976562, 0, 156.3951561000204, 0, 0, 1967.11376953125, 395.9012302382544, 0, 0, 0, 1, 0]
+
 # General reminders (mainly for myself =3)
 A Dummy's Guide to things
 ---

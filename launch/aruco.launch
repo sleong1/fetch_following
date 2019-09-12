@@ -6,6 +6,7 @@
     <arg name="marker_frame"    default="aruco_marker_frame"/>
     <arg name="ref_frame"       default=""/>  <!-- leave empty and the pose will be published wrt param parent_name -->
     <arg name="corner_refinement" default="LINES" /> <!-- NONE, HARRIS, LINES, SUBPIX -->
+    <arg name="video_device" default="/dev/video4"/>
 
 
     <node pkg="aruco_ros" type="single" name="aruco_single">
@@ -19,6 +20,11 @@
         <param name="marker_frame"       value="$(arg marker_frame)" />
         <param name="corner_refinement"  value="$(arg corner_refinement)" />
     </node>
+
+    <include file="$(find fetch_following)/launch/usb_cam_stream_publisher.launch">
+        <arg name="video_device" value="$(arg video_device)"/>
+    </include>
+
 
 </launch>
 

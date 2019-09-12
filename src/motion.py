@@ -25,16 +25,21 @@ class Motion(object):
         vel = self.convert_to_vel(msg.pose)
         self.publish_cmd_vel(vel)
 
+    def get_distance(self, x1, y1, x2=0, y2=0, z1=0, z2=0):
+        return sqrt((x2 - x1)**2 + (y2 - y1)**2 + (z2 - z1)**2)
 
-    def get_distance(self, x1, y1, x2=0, y2=0):
-        return sqrt((x2 - x1)**2 + (y2 - y1)**2)
-
-    def convert_to_vel(self, pose):
+    def convert_to_vel(self, pose, threshold_dist=1.5):
         # Get the relative distance from the robot to the human
         # Use it for speed scaling
-        distance = self.get_distance(pose.position.x, pose.position.y)
-        
-        pass
+        max_speed = 1.0 #m/s
+        distance = self.get_distance(pose.position.x, pose.position.y, pose.position.z)
+        scale = distance/(1.25 * threshold_dist)
+        # 1.25 is so when at threshold distance, will travel
+        # at 0.8 m/s ~ approximately human walking speed
+        if scale > 1:
+            scale = 1.0
+        velocity = scale * max_speed
+        return velocity
 
     def publish_cmd_vel(self, msg=None):
         # publish cmd_vel messages

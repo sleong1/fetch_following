@@ -160,10 +160,6 @@ To view your tf, use:
 
 Terminal 1:
 
-    roslaunch fetch_following usb_cam_stream_publisher.launch 
-
-Terminal 2:
-
     roslaunch fetch_following aruco_marker_finder.launch 
 
 # To get the rosbag
@@ -171,3 +167,15 @@ Terminal 2:
 rosbag record <topics to record> <another topic> -O <name of the file>
 
     rosbag record /usb_cam/image_raw /usb_cam/camera_info -O following_3
+
+# To run the fetch motion control
+
+```bash
+rosrun fetch_following motion.py
+```
+
+to make it rosrun-able(executable)
+
+  chomd +x motion.py
+
+  then you can rosrun fetch_following motion.py

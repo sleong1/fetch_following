@@ -165,3 +165,9 @@ Terminal 1:
 Terminal 2:
 
     roslaunch fetch_following aruco_marker_finder.launch 
+
+# To get the rosbag
+
+rosbag record <topics to record> <another topic> -O <name of the file>
+
+    rosbag record /usb_cam/image_raw /usb_cam/camera_info -O following_3

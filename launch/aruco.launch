@@ -1,17 +1,21 @@
 <launch>
 
     <arg name="markerId"        default="701"/>
-    <arg name="markerSize"      default="0.1"/>    <!-- in m -->
+    <arg name="markerSize"      default="0.10"/>    <!-- in m -->
     <arg name="eye"             default="left"/>
     <arg name="marker_frame"    default="aruco_marker_frame"/>
     <arg name="ref_frame"       default=""/>  <!-- leave empty and the pose will be published wrt param parent_name -->
     <arg name="corner_refinement" default="LINES" /> <!-- NONE, HARRIS, LINES, SUBPIX -->
     <arg name="video_device" default="/dev/video4"/>
 
+    <include file="$(find fetch_following)/launch/usb_cam_stream_publisher.launch">
+        <arg name="video_device" value="$(arg video_device)"/>
+    </include>
+
 
     <node pkg="aruco_ros" type="single" name="aruco_single">
-        <remap from="/camera_info" to="/stereo/$(arg eye)/camera_info" />
-        <remap from="/image" to="/stereo/$(arg eye)/image_rect_color" />
+        <remap from="/camera_info" to="/usb_cam/camera_info" />
+        <remap from="/image" to="/usb_cam/image_raw"/>
         <param name="image_is_rectified" value="True"/>
         <param name="marker_size"        value="$(arg markerSize)"/>
         <param name="marker_id"          value="$(arg markerId)"/>
@@ -20,10 +24,6 @@
         <param name="marker_frame"       value="$(arg marker_frame)" />
         <param name="corner_refinement"  value="$(arg corner_refinement)" />
     </node>
-
-    <include file="$(find fetch_following)/launch/usb_cam_stream_publisher.launch">
-        <arg name="video_device" value="$(arg video_device)"/>
-    </include>
 
 
 </launch>

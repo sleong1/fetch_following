@@ -34,6 +34,8 @@ class Motion(object):
         max_speed = 1.0 #m/s
         distance = self.get_distance(pose.position.x, pose.position.y, pose.position.z)
         scale = distance/(1.25 * threshold_dist)
+        if distance < 0.5:
+            return 0
         # 1.25 is so when at threshold distance, will travel
         # at 0.8 m/s ~ approximately human walking speed
         if scale > 1:
@@ -41,10 +43,9 @@ class Motion(object):
         velocity = scale * max_speed
         return velocity
 
-    def publish_cmd_vel(self, msg=None):
+    def publish_cmd_vel(self, velocity=0):
         # publish cmd_vel messages
-        if not msg:
-            msg = Twist()
+        msg = Twist()
         self.cmd_vel_pub.publish(msg)
 
     def main(self):

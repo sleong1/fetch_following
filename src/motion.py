@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from math import sqrt
+from math import sqrt, asin, pi
 
 import rospy
 from sensor_msgs.msg import LaserScan
@@ -22,8 +22,8 @@ class Motion(object):
         self.laser_readings = msg
 
     def human_detection(self, msg):
-        vel = self.convert_to_vel(msg.pose)
-        self.publish_cmd_vel(vel)
+        vel, rot = self.convert_to_vel(msg.pose)
+        self.publish_cmd_vel(vel, rot)
 
     def get_distance(self, x1, y1, x2=0, y2=0, z1=0, z2=0):
         return sqrt((x2 - x1)**2 + (y2 - y1)**2 + (z2 - z1)**2)
@@ -31,13 +31,29 @@ class Motion(object):
     def convert_to_vel(self, pose, threshold_dist=2.0, human_dist=0.8):
         # Get the relative distance from the robot to the human
         # Use it for speed scaling
-        max_speed = 1.0 #m/s
+        max_speed = 1.0 #m/s also rad/s
         distance = self.get_distance(pose.position.x, pose.position.y, pose.position.z)
-        print(distance)
+        # print("distance is: " + str(distance))
+        # print(distance)
         scale = distance/(1.25 * threshold_dist)
+        
+        # For some reason, the middle is not in the centre
+        x_offset = pose.position.x + 0.2
+
+        # print pose.position.x
+        rot_scale = 5*(asin(x_offset/distance)/(pi/4))
+        # print("x position is: ", pose.position.x)
+        # print("scale is: ", rot_scale)
+
+        if rot_scale > 1:
+            rot_scale = 1
+        rotation =  rot_scale * max_speed
+        # print(rotation*(180/pi))
+
+
         if distance < human_dist:
-            print("not moving, too close to human")
-            return 0
+            print("not moving linearly, too close to human")
+            return 0.0, rotation
         # 1.25 is so when at threshold distance, will travel
         # at 0.8 m/s ~ approximately human walking speed
         if scale > 1:
@@ -45,12 +61,13 @@ class Motion(object):
         velocity = scale * max_speed
 
         # print(velocity)
-        return velocity
+        return velocity, rotation
 
-    def publish_cmd_vel(self, velocity=0):
+    def publish_cmd_vel(self, velocity=0, rotation=0):
         # publish cmd_vel messages
         msg = Twist()
         msg.linear.x = velocity
+        msg.angular.z = rotation
         self.cmd_vel_pub.publish(msg)
 
     def main(self):

@@ -53,7 +53,7 @@ If you don't want to calibrate and you trust mine, here's the yaml for the usb c
 
 go to:
 
-    cd ./ros/camera_info
+    cd .ros/camera_info
 
 And make a file called 'head_camera.yaml' and copy the text below:
 

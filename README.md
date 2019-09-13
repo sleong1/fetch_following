@@ -1,15 +1,15 @@
 # fetch_following
 Repository for 41014 Sensors and Control project to control a fetch robot to follow a human ***That has been TAGGED!***.
 
-##### Fast Travel
-[Installations](https://github.com/sleong1/fetch_following#installations)
-[Camera Calibration](https://github.com/sleong1/fetch_following#camera-calibration)
-[General reminders](https://github.com/sleong1/fetch_following#general-reminders-mainly-for-myself-3)
-[To Run the Pose detector](https://github.com/sleong1/fetch_following#to-run-the-pose-detector)
-[To get the rosbag](https://github.com/sleong1/fetch_following#to-get-the-rosbag)
-[To run the simulation](https://github.com/sleong1/fetch_following#to-run-the-simulation)
-[To run the fetch motion control](https://github.com/sleong1/fetch_following#to-run-the-fetch-motion-control)
-[How to be a Parasite (connecting to a host and sharing a roscore)](https://github.com/sleong1/fetch_following#how-to-be-a-parasite-connecting-to-a-host-and-sharing-a-roscore)
+# Fast Travel
+1. [Installations](https://github.com/sleong1/fetch_following#installations)
+2. [Camera Calibration](https://github.com/sleong1/fetch_following#camera-calibration)
+3. [General reminders](https://github.com/sleong1/fetch_following#general-reminders-mainly-for-myself-3)
+4. [To Run the Pose detector](https://github.com/sleong1/fetch_following#to-run-the-pose-detector)
+5. [To get the rosbag](https://github.com/sleong1/fetch_following#to-get-the-rosbag)
+6. [To run the simulation](https://github.com/sleong1/fetch_following#to-run-the-simulation)
+7. [To run the fetch motion control](https://github.com/sleong1/fetch_following#to-run-the-fetch-motion-control)
+8. [How to be a Parasite (connecting to a host and sharing a roscore)](https://github.com/sleong1/fetch_following#how-to-be-a-parasite-connecting-to-a-host-and-sharing-a-roscore)
 
 # Installations
 

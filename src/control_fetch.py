@@ -20,15 +20,11 @@ class Controller(object):
         self.cmd_vel_pub.publish(msg)
 
 
-
-
-
-
 if __name__ == '__main__':
     
     c = Controller()
-        
-    while 1:
-        c.publish_cmd_vel(x=-1,y=0,turn=0) 
-        rospy.sleep(0.1)
+    rate = rospy.Rate(10)
+    while not rospy.is_shutdown():
+        c.publish_cmd_vel(x=-1,y=1,turn=0) 
+        rate.sleep()
 

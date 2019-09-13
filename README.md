@@ -168,6 +168,16 @@ rosbag record <topics to record> <another topic> -O <name of the file>
 
     rosbag record /usb_cam/image_raw /usb_cam/camera_info -O following_3
 
+# To run the simulation
+
+Follow the first few instructions from this site to install the fetch simulation:
+
+https://docs.fetchrobotics.com/gazebo.html
+
+Once installed, enter this in a new terminal:
+
+    roslaunch fetch_gazebo simulation.launch
+
 # To run the fetch motion control
 
 ```bash
@@ -179,3 +189,35 @@ to make it rosrun-able(executable)
   chomd +x motion.py
 
   then you can rosrun fetch_following motion.py
+
+To control the fetch with keyboard commands
+---
+
+    rosrun teleop_twist_keyboard teleop_twist_keyboard.py
+
+**Some extra useful commands:**
+
+    rostopic echo /odom
+
+    rosmsg show Twist
+
+
+# How to be a Parasite (connecting to a host and sharing a roscore)
+
+    cd /etc
+    subl hosts
+
+Add the host's ip and computer's name. 
+
+eg:
+    
+    <192.3.5.234> <name of the host computer>
+ 
+
+If you don't know your ip address, use
+
+    ifconfig
+
+and find the ip besides 'inet addr'
+
+**Extra:** you and your host must share the same network (wifi or ethernet connection)

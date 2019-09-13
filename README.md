@@ -1,6 +1,16 @@
 # fetch_following
 Repository for 41014 Sensors and Control project to control a fetch robot to follow a human ***That has been TAGGED!***.
 
+##### Fast Travel
+[Installations](https://github.com/sleong1/fetch_following#installations)
+[Camera Calibration](https://github.com/sleong1/fetch_following#camera-calibration)
+[General reminders](https://github.com/sleong1/fetch_following#general-reminders-mainly-for-myself-3)
+[To Run the Pose detector](https://github.com/sleong1/fetch_following#to-run-the-pose-detector)
+[To get the rosbag](https://github.com/sleong1/fetch_following#to-get-the-rosbag)
+[To run the simulation](https://github.com/sleong1/fetch_following#to-run-the-simulation)
+[To run the fetch motion control](https://github.com/sleong1/fetch_following#to-run-the-fetch-motion-control)
+[How to be a Parasite (connecting to a host and sharing a roscore)](https://github.com/sleong1/fetch_following#how-to-be-a-parasite-connecting-to-a-host-and-sharing-a-roscore)
+
 # Installations
 
     sudo apt-get install ros-kinetic-aruco-ros
@@ -55,9 +65,9 @@ go to:
 
     cd .ros/camera_info
 
-And make a file called 'head_camera.yaml' and copy the text below:
+And make a file called `head_camera.yaml` and copy the text below:
 
-    image_width: 640
+    image_width: 64
     image_height: 480
     camera_name: head_camera
     camera_matrix:
@@ -117,7 +127,7 @@ Step 2. launch the aruco:
 
     roslaunch fetch_following aruco_marker_finder.launch markerId:=701 markerSize:=0.1
 
-Change 'markerId:=701 markerSize:=0.1' to match the specs of your artag or change this directly in the launch. For this project, it has already been changed.
+Change `markerId:=701 markerSize:=0.1` to match the specs of your artag or change this directly in the launch. For this project, it has already been changed.
 
 Run 
 
@@ -186,9 +196,9 @@ rosrun fetch_following motion.py
 
 to make it rosrun-able(executable)
 
-  chomd +x motion.py
+    chomd +x motion.py
 
-  then you can rosrun fetch_following motion.py
+then you can `rosrun fetch_following motion.py`
 
 To control the fetch with keyboard commands
 ---

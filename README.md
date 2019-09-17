@@ -10,6 +10,7 @@ Repository for 41014 Sensors and Control project to control a fetch robot to fol
 6. [To run the simulation](https://github.com/sleong1/fetch_following#to-run-the-simulation)
 7. [To run the fetch motion control](https://github.com/sleong1/fetch_following#to-run-the-fetch-motion-control)
 8. [How to be a Parasite (connecting to a host and sharing a roscore)](https://github.com/sleong1/fetch_following#how-to-be-a-parasite-connecting-to-a-host-and-sharing-a-roscore)
+9. [Laser Scan](https://github.com/sleong1/fetch_following#laser-scan)
 
 # Installations
 
@@ -231,3 +232,27 @@ If you don't know your ip address, use
 and find the ip besides 'inet addr'
 
 **Extra:** you and your host must share the same network (wifi or ethernet connection)
+
+Exporting your ip
+---
+
+    export ROS_MASTER_URI=http://<your_computer_ip>:11311
+
+
+# Laser Scan
+
+if you want to see the objects in the simulation:
+
+    roslaunch fetch_gazebo playground.launch
+
+This will take a while to load depending on your computer. So, take a small break and come back.
+
+The topic for this robot's laser scan is from the topic `/base_scan`
+
+to see the messages:
+
+    rostopic echo /base_scan -n1
+
+using `-n1` at the end will let you see only 1 message.
+
+

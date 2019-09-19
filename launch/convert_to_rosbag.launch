@@ -6,7 +6,7 @@
         <arg name="camera_name" value="videofile" />
         <!-- full path to the video file -->
         <!-- wget http://techslides.com/demos/sample-videos/small.mp4 -O /tmp/small.mp4 -->
-        <arg name="video_stream_provider" value="/home/snowy/Downloads/follow_me.mp4" />
+        <arg name="video_stream_provider" value="/home/su/Downloads/follow_me.mp4" />
         <!-- set camera fps to (video files not affected) -->
         <!-- <arg name="set_camera_fps" value="30"/> -->
         <!-- set buffer queue size of frame capturing to -->
@@ -29,9 +29,9 @@
 
    </include>
     
-    <node name="asd" type="relay" pkg="topic_tools" args="/videofile/image_raw /usb_cam/image_raw" />
+    <node name="asd" type="throttle" pkg="topic_tools" args="messages /videofile/image_raw 20 /usb_cam/image_raw" />
 
-    <node name="askljd" type="relay" pkg="topic_tools" args="/videofile/camera_info /usb_cam/camera_info" />
+    <node name="askljd" type="throttle" pkg="topic_tools" args="messages /videofile/camera_info 20 /usb_cam/camera_info" />
 
 
 </launch>

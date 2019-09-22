@@ -8,9 +8,9 @@
     <arg name="corner_refinement" default="LINES" /> <!-- NONE, HARRIS, LINES, SUBPIX -->
     <arg name="video_device" default="/dev/video4"/>
 
-    <include file="$(find fetch_following)/launch/usb_cam_stream_publisher.launch">
+<!--     <include file="$(find fetch_following)/launch/usb_cam_stream_publisher.launch">
         <arg name="video_device" value="$(arg video_device)"/>
-    </include>
+    </include> -->
 
 
     <node pkg="aruco_ros" type="single" name="aruco_single">

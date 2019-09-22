@@ -15,6 +15,12 @@ class Motion(object):
         self.cmd_vel_pub = rospy.Publisher('/base_controller/command', Twist, queue_size=1)
         self.laser_sub = rospy.Subscriber('/base_scan', LaserScan, self.laser_cb, queue_size=1)
         self.human_sub = rospy.Subscriber('/aruco_single/pose', PoseStamped, self.human_detection, queue_size=1)
+        self.last_received_pose_time = None
+        self.aruco_pose = None
+        self.max_speed = 1.0 #m/s
+        self.max_rads = 1.0 # rad/s
+        while not self.aruco_pose:
+            rospy.sleep(0.1)
         print("Finished initialising Motion module")
 
     def laser_cb(self, msg):
@@ -22,32 +28,39 @@ class Motion(object):
         self.laser_readings = msg
 
     def human_detection(self, msg):
-        vel, rot = self.convert_to_vel(msg.pose)
+        self.aruco_pose = msg.pose
+        self.last_received_pose_time = rospy.Time.now()
+        self.send_speed_command()
+
+    def send_speed_command(self):
+        vel, rot = self.convert_to_vel(self.aruco_pose)
         self.publish_cmd_vel(vel, rot)
 
-    def get_distance(self, x1, y1, x2=0, y2=0, z1=0, z2=0):
+    def get_distance(self, x1, y1, z1=0, x2=0, y2=0, z2=0):
         return sqrt((x2 - x1)**2 + (y2 - y1)**2 + (z2 - z1)**2)
 
-    def convert_to_vel(self, pose, threshold_dist=2.0, human_dist=0.8):
+    def convert_to_vel(self, pose, threshold_dist=2.0, human_dist=0.3):
         # Get the relative distance from the robot to the human
         # Use it for speed scaling
-        max_speed = 1.0 #m/s also rad/s
-        distance = self.get_distance(pose.position.x, pose.position.y, pose.position.z)
+
+        distance = self.get_distance(pose.position.x, pose.position.y, pose.position.z)*10
+        # Multiplied by 10 because it is in wrong scale.
         # print("distance is: " + str(distance))
-        # print(distance)
+
         scale = distance/(1.25 * threshold_dist)
         
-        # For some reason, the middle is not in the centre
-        x_offset = pose.position.x + 0.2
-
+        x_offset = pose.position.x
+        print("x_offset is:" + str(x_offset))
+        # print(x_offset/distance)
         # print pose.position.x
-        rot_scale = 5*(asin(x_offset/distance)/(pi/4))
+        rot_scale = 5*asin(x_offset/distance)/(pi/4)
         # print("x position is: ", pose.position.x)
         # print("scale is: ", rot_scale)
 
-        if rot_scale > 1:
-            rot_scale = 1
-        rotation =  rot_scale * max_speed
+        if abs(rot_scale) > 1:
+            rot_scale = rot_scale/abs(rot_scale)
+        # Simulation is opposite to camera frame ;/
+        rotation = -rot_scale * self.max_rads
         # print(rotation*(180/pi))
 
 
@@ -58,9 +71,9 @@ class Motion(object):
         # at 0.8 m/s ~ approximately human walking speed
         if scale > 1:
             scale = 1.0
-        velocity = scale * max_speed
+        velocity = scale * self.max_speed
 
-        # print(velocity)
+        print("robot is moving", velocity, rotation)
         return velocity, rotation
 
     def publish_cmd_vel(self, velocity=0, rotation=0):
@@ -71,9 +84,13 @@ class Motion(object):
         self.cmd_vel_pub.publish(msg)
 
     def main(self):
+        r = rospy.Rate(10)
         while not rospy.is_shutdown():
+            if (rospy.Time.now() - self.last_received_pose_time).to_sec < 5:
+                self.send_speed_command()
+            r.sleep()
             # Will wait for messages forever
-            rospy.spin()
+            # rospy.spin()
             # Will publish empty cmd_vel messages every second forever
             # self.publish_cmd_vel(Twist())
             # rospy.sleep(1.0)

@@ -18,6 +18,10 @@ Repository for 41014 Sensors and Control project to control a fetch robot to fol
 
     sudo apt-get install ros-kinetic-aruco-msgs
 
+To install other packages on kinetic:
+
+    sudo apt-get install ros-kinetic-<package_name>
+
 # Camera Calibration
 You'll need to calibrate your camera before using it. Guidance was found in this website:
 
@@ -254,5 +258,13 @@ to see the messages:
     rostopic echo /base_scan -n1
 
 using `-n1` at the end will let you see only 1 message.
+
+To view the lasers:
+
+    rosrun rviz rviz
+
+When rviz is open to view the scan, 
+add the LaserScan topic and have the topic pointing to `/base_sca_raw`. Remember to change the topic in the Global Option section to `base_link` for its Fixed Frame.
+
 
 

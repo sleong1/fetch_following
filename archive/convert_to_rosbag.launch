@@ -29,9 +29,9 @@
 
    </include>
     
-    <node name="asd" type="relay" pkg="topic_tools" args="/videofile/image_raw /usb_cam/image_raw" />
+    <node name="publish_usb_image_raw" type="relay" pkg="topic_tools" args="/videofile/image_raw /usb_cam/image_raw" />
 
-    <node name="askljd" type="relay" pkg="topic_tools" args="/videofile/camera_info /usb_cam/camera_info" />
+    <node name="publish_camera_info" type="relay" pkg="topic_tools" args="/videofile/camera_info /usb_cam/camera_info" />
 
 
 </launch>

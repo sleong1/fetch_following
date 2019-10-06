@@ -264,7 +264,7 @@ To view the lasers:
     rosrun rviz rviz
 
 When rviz is open to view the scan, 
-add the LaserScan topic and have the topic pointing to `/base_sca_raw`. Remember to change the topic in the Global Option section to `base_link` for its Fixed Frame.
+add the LaserScan topic and have the topic pointing to `/base_scan_raw`. Remember to change the topic in the Global Option section to `base_link` for its Fixed Frame.
 
 
 

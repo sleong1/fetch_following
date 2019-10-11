@@ -19,6 +19,8 @@ class Motion(object):
         self.aruco_pose = None
         self.max_speed = 1.0 #m/s
         self.max_rads = 1.0 # rad/s
+        self.vel = 0.0
+        self.rot = 0.0
         while not self.aruco_pose:
             rospy.sleep(0.1)
         print("Finished initialising Motion module")
@@ -35,9 +37,7 @@ class Motion(object):
     def send_speed_command(self, new=False):
         if new is True:
             self.vel, self.rot = self.convert_to_vel(self.aruco_pose)
-            self.publish_cmd_vel(vel, rot)
-        else:
-            self.publish_cmd_vel(self.vel, self.rot)
+        self.publish_cmd_vel(self.vel, self.rot)
 
     def get_distance(self, x1, y1, z1=0, x2=0, y2=0, z2=0):
         return sqrt((x2 - x1)**2 + (y2 - y1)**2 + (z2 - z1)**2)
@@ -88,9 +88,9 @@ class Motion(object):
         self.cmd_vel_pub.publish(msg)
 
     def main(self):
-        r = rospy.Rate(10)
+        r = rospy.Rate(20)
         while not rospy.is_shutdown():
-            if (rospy.Time.now() - self.last_received_pose_time).to_sec < 2:
+            if (rospy.Time.now() - self.last_received_pose_time).to_sec < 5:
                 self.send_speed_command()
             r.sleep()
             # Will wait for messages forever

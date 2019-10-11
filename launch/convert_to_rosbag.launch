@@ -29,15 +29,9 @@
 
    </include>
     
-<<<<<<< HEAD:archive/convert_to_rosbag.launch
-    <node name="publish_usb_image_raw" type="relay" pkg="topic_tools" args="/videofile/image_raw /usb_cam/image_raw" />
-
-    <node name="publish_camera_info" type="relay" pkg="topic_tools" args="/videofile/camera_info /usb_cam/camera_info" />
-=======
     <node name="asd" type="throttle" pkg="topic_tools" args="messages /videofile/image_raw 20 /usb_cam/image_raw" />
 
     <node name="askljd" type="throttle" pkg="topic_tools" args="messages /videofile/camera_info 20 /usb_cam/camera_info" />
->>>>>>> 6f67a3e59d1e118dcaeb149e3037c79d26cc9c7e:launch/convert_to_rosbag.launch
 
 
 </launch>

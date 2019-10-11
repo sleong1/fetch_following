@@ -30,18 +30,22 @@ class Motion(object):
     def human_detection(self, msg):
         self.aruco_pose = msg.pose
         self.last_received_pose_time = rospy.Time.now()
-        self.send_speed_command()
+        self.send_speed_command(new=True)
 
-    def send_speed_command(self):
-        vel, rot = self.convert_to_vel(self.aruco_pose)
-        self.publish_cmd_vel(vel, rot)
+    def send_speed_command(self, new=False):
+        if new is True:
+            self.vel, self.rot = self.convert_to_vel(self.aruco_pose)
+            self.publish_cmd_vel(vel, rot)
+        else:
+            self.publish_cmd_vel(self.vel, self.rot)
 
     def get_distance(self, x1, y1, z1=0, x2=0, y2=0, z2=0):
         return sqrt((x2 - x1)**2 + (y2 - y1)**2 + (z2 - z1)**2)
 
-    def convert_to_vel(self, pose, threshold_dist=1.2, human_dist=0.3):
+    def convert_to_vel(self, pose, threshold=0.8):
         # Get the relative distance from the robot to the human
         # Use it for speed scaling
+        threshold_dist=2.0
 
         distance = self.get_distance(pose.position.x, pose.position.y, pose.position.z)
         # Multiplied by 10 because it is in wrong scale.
@@ -64,7 +68,7 @@ class Motion(object):
         # print(rotation*(180/pi))
 
 
-        if distance < human_dist:
+        if distance < threshold:
             print("not moving linearly, too close to human")
             return 0.0, rotation
         # 1.25 is so when at threshold distance, will travel
@@ -86,7 +90,7 @@ class Motion(object):
     def main(self):
         r = rospy.Rate(10)
         while not rospy.is_shutdown():
-            if (rospy.Time.now() - self.last_received_pose_time).to_sec < 5:
+            if (rospy.Time.now() - self.last_received_pose_time).to_sec < 2:
                 self.send_speed_command()
             r.sleep()
             # Will wait for messages forever

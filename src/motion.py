@@ -45,16 +45,16 @@ class Motion(object):
     def convert_to_vel(self, pose, threshold=0.8):
         # Get the relative distance from the robot to the human
         # Use it for speed scaling
-        threshold_dist=2.0
 
         distance = self.get_distance(pose.position.x, pose.position.y, pose.position.z)
         # Multiplied by 10 because it is in wrong scale.
         print("distance is: " + str(distance))
 
-        scale = distance/(1.25 * threshold_dist)
+        threshold_dist=2.0
+        scale = distance/(1.25*threshold_dist)
         
         x_offset = pose.position.x
-        print("x_offset is:" + str(x_offset))
+        # print("x_offset is:" + str(x_offset))
         # print(x_offset/distance)
         # print pose.position.x
         rot_scale = 5*asin(x_offset/distance)/(pi/4)
@@ -67,10 +67,15 @@ class Motion(object):
         rotation = -rot_scale * self.max_rads
         # print(rotation*(180/pi))
 
+        backwards_threshold = 0.4
 
         if distance < threshold:
-            print("not moving linearly, too close to human")
-            return 0.0, rotation
+            if distance >= backwards_threshold:
+                print("too close to human, not moving linearly")
+                return 0.0, rotation
+            else:
+                print("too close to human, moving backwards")
+                return -0.2, rotation
         # 1.25 is so when at threshold distance, will travel
         # at 0.8 m/s ~ approximately human walking speed
         if scale > 1:
@@ -88,10 +93,13 @@ class Motion(object):
         self.cmd_vel_pub.publish(msg)
 
     def main(self):
+        self.last_received_pose_time = rospy.Time.now()
         r = rospy.Rate(20)
-        while not rospy.is_shutdown():
-            if (rospy.Time.now() - self.last_received_pose_time).to_sec < 5:
-                self.send_speed_command()
+        while not rospy.is_shutdown():    
+            self.send_speed_command()
+            if (rospy.Time.now() - self.last_received_pose_time).to_sec > 5:
+                self.vel = 0
+                self.rot = 0
             r.sleep()
             # Will wait for messages forever
             # rospy.spin()

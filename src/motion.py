@@ -12,7 +12,7 @@ class Motion(object):
     def __init__(self):
         rospy.init_node('fetch_motion')
         self.laser_readings = None
-        self.cmd_vel_pub = rospy.Publisher('/base_controller/command', Twist, queue_size=1)
+        self.cmd_vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
         self.laser_sub = rospy.Subscriber('/base_scan', LaserScan, self.laser_cb, queue_size=1)
         self.human_sub = rospy.Subscriber('/aruco_single/pose', PoseStamped, self.human_detection, queue_size=1)
         self.last_received_pose_time = None
@@ -39,13 +39,13 @@ class Motion(object):
     def get_distance(self, x1, y1, z1=0, x2=0, y2=0, z2=0):
         return sqrt((x2 - x1)**2 + (y2 - y1)**2 + (z2 - z1)**2)
 
-    def convert_to_vel(self, pose, threshold_dist=2.0, human_dist=0.3):
+    def convert_to_vel(self, pose, threshold_dist=1.2, human_dist=0.3):
         # Get the relative distance from the robot to the human
         # Use it for speed scaling
 
-        distance = self.get_distance(pose.position.x, pose.position.y, pose.position.z)*10
+        distance = self.get_distance(pose.position.x, pose.position.y, pose.position.z)
         # Multiplied by 10 because it is in wrong scale.
-        # print("distance is: " + str(distance))
+        print("distance is: " + str(distance))
 
         scale = distance/(1.25 * threshold_dist)
         

@@ -1,6 +1,15 @@
 # fetch_following
 Repository for 41014 Sensors and Control project to control a fetch robot to follow a human ***That has been TAGGED!***.
 
+# Quick run
+To run this on the robot, run the following commands, replacing the ip placeholders with your appropriate ip.
+```
+ROS_MASTER_URI=http://robot.ip:11311
+ROS_IP=your.ip
+roslaunch fetch_following fetch_following.launch
+```
+This will launch the aruco ROS package [subscribed to the robot's RGB camera topic] and our motion package.
+
 # Fast Travel
 1. [Installations](https://github.com/sleong1/fetch_following#installations)
 2. [Camera Calibration](https://github.com/sleong1/fetch_following#camera-calibration)

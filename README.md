@@ -267,4 +267,44 @@ When rviz is open to view the scan,
 add the LaserScan topic and have the topic pointing to `/base_scan_raw`. Remember to change the topic in the Global Option section to `base_link` for its Fixed Frame.
 
 
+    sudo apt-get install ros-kinetic-move-base
 
+
+
+# connecting to the robot
+
+make sure the robot is in the hosts file
+access through: 
+
+    cd /etc
+    gedit hosts
+    <robot_ip> fetch31
+
+save 
+
+to add the ip to source bashrc, do:
+
+    sudo gedit ~/.bashrc
+
+type in password
+
+    export ROS_MASTER_URI=http://fetch31:11311
+
+remove this line if you want your local host back
+now you can source the bashrc
+
+    source ~/.bashrc
+
+and this will export the ros master automatically
+
+# debugging in general
+
+rostopic echo /cmd_vel
+
+run the motion.py script with `rosrun fetch_following motion.py` 
+
+    export ROS_MASTER_URI:<ip_of_robot>:11311
+
+then 
+
+    export ROS_IP=<your_computer's_ip>

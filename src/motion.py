@@ -57,7 +57,7 @@ class Motion(object):
         # print("x_offset is:" + str(x_offset))
         # print(x_offset/distance)
         # print pose.position.x
-        rot_scale = 5*asin(x_offset/distance)/(pi/4)
+        rot_scale = 0.3*asin(x_offset/distance)/(pi/4)
         # print("x position is: ", pose.position.x)
         # print("scale is: ", rot_scale)
 
@@ -72,18 +72,19 @@ class Motion(object):
         if distance < threshold:
             if distance >= backwards_threshold:
                 print("too close to human, not moving linearly")
-                return 0.0, rotation
+                return 0.0, (rotation*0.2)
             else:
                 print("too close to human, moving backwards")
-                return -0.2, rotation
+                return -0.2, (rotation*0.2)
         # 1.25 is so when at threshold distance, will travel
         # at 0.8 m/s ~ approximately human walking speed
         if scale > 1:
             scale = 1.0
-        velocity = scale * self.max_speed
+        velocity = scale * self.max_speed * 0.8
 
+        # velocity = 0.5
         print("robot is moving", velocity, rotation)
-        return velocity, rotation
+        return velocity, (rotation/0.5)
 
     def publish_cmd_vel(self, velocity=0, rotation=0):
         # publish cmd_vel messages
@@ -94,10 +95,10 @@ class Motion(object):
 
     def main(self):
         self.last_received_pose_time = rospy.Time.now()
-        r = rospy.Rate(20)
+        r = rospy.Rate(30)
         while not rospy.is_shutdown():    
             self.send_speed_command()
-            if (rospy.Time.now() - self.last_received_pose_time).to_sec > 5:
+            if rospy.Time.now() - self.last_received_pose_time > rospy.Duration(1):
                 self.vel = 0
                 self.rot = 0
             r.sleep()

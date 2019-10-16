@@ -1,4 +1,5 @@
-# how to make it move
+#!/usr/bin/env python
+
 import rospy
 import numpy as np
     
@@ -102,28 +103,12 @@ class Controller(object):
 
         #populate the dist within certain limit
         dist = []
-        y_dist_left = distance[30]
-        y_dist_right = distance[632]
-        print('\n y_dist_right distance[632]: ' + str(y_dist_right))
-        print('\n y_dist_left distance[30]: ' + str(y_dist_left))
+        y_dist_left = distance[60]
+        y_dist_right = distance[602]
+        print('\n y_dist_right distance[602]: ' + str(y_dist_right))
+        print('\n y_dist_left distance[60]: ' + str(y_dist_left))
 
         hallway_threshold = 1
-        if y_dist_left < hallway_threshold:
-             while y_dist_left < hallway_threshold:
-                print('Re centring')
-                x = 0.5
-                turn = -0.5
-                # turn = angular_velocity
-                print float(x), float(turn)
-                return float(x), float(turn)
-        if y_dist_right < hallway_threshold:
-             while y_dist_left < hallway_threshold:
-                print('Re centring')
-                x = 0.5
-                turn = 0.5
-                # turn = angular_velocity
-                print float(x), float(turn)
-                return float(x), float(turn)
         for i in range(300,360):
             dist = distance[i]
         # dist = distance[331]
@@ -143,12 +128,26 @@ class Controller(object):
                     # turn = angular_velocity
                     print float(x), float(turn)
                     return float(x), float(turn)
+        if y_dist_left < hallway_threshold:
+             while y_dist_left < hallway_threshold:
+                print('Re centring')
+                x = 0.5
+                turn = -0.5
+                # turn = angular_velocity
+                print float(x), float(turn)
+                return float(x), float(turn)
+        if y_dist_right < hallway_threshold:
+             while y_dist_left < hallway_threshold:
+                print('Re centring')
+                x = 0.5
+                turn = 0.5
+                # turn = angular_velocity
+                print float(x), float(turn)
+                return float(x), float(turn)
         x = 1
         turn = 0
         print float(x), float(turn)
         return float(x), float(turn)
-
-    # if avoid_obstacle is done-> go back to following person
 
     def grouping(self, range_list): 
         ''' Sorting the list of ranges into smaller groups

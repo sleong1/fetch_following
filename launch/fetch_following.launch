@@ -1,0 +1,6 @@
+<launch>
+
+<include file="aruco" pkg="aruco_ros"/>
+<node name="motion" pkg="fetch_following" type="motion.py"/>
+
+</launch>

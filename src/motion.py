@@ -17,8 +17,8 @@ class Motion(object):
         self.human_sub = rospy.Subscriber('/aruco_single/pose', PoseStamped, self.human_detection, queue_size=1)
         self.last_received_pose_time = None
         self.aruco_pose = None
-        self.max_speed = 1.0 #m/s
-        self.max_rads = 1.0 # rad/s
+        self.max_speed = 1.0 * 0.8 #m/s
+        self.max_rads = 1.0 * 0.2 # rad/s
         self.vel = 0.0
         self.rot = 0.0
         while not self.aruco_pose:
@@ -42,10 +42,10 @@ class Motion(object):
     def get_distance(self, x1, y1, z1=0, x2=0, y2=0, z2=0):
         return sqrt((x2 - x1)**2 + (y2 - y1)**2 + (z2 - z1)**2)
 
-    def convert_to_vel(self, pose, threshold=0.8):
+    def convert_to_vel(self, pose, threshold=0.8, backwards_threshold=0.4):
         # Get the relative distance from the robot to the human
         # Use it for speed scaling
-
+        
         distance = self.get_distance(pose.position.x, pose.position.y, pose.position.z)
         # Multiplied by 10 because it is in wrong scale.
         print("distance is: " + str(distance))
@@ -67,24 +67,22 @@ class Motion(object):
         rotation = -rot_scale * self.max_rads
         # print(rotation*(180/pi))
 
-        backwards_threshold = 0.4
-
         if distance < threshold:
             if distance >= backwards_threshold:
                 print("too close to human, not moving linearly")
-                return 0.0, (rotation*0.2)
+                return 0.0, rotation
             else:
                 print("too close to human, moving backwards")
-                return -0.2, (rotation*0.2)
+                return -0.2, rotation
         # 1.25 is so when at threshold distance, will travel
         # at 0.8 m/s ~ approximately human walking speed
         if scale > 1:
             scale = 1.0
-        velocity = scale * self.max_speed * 0.8
+        velocity = scale * self.max_speed
 
         # velocity = 0.5
         print("robot is moving", velocity, rotation)
-        return velocity, (rotation/0.5)
+        return velocity, rotation
 
     def publish_cmd_vel(self, velocity=0, rotation=0):
         # publish cmd_vel messages

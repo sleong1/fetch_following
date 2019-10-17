@@ -8,7 +8,7 @@ ROS_MASTER_URI=http://robot.ip:11311
 ROS_IP=your.ip
 roslaunch fetch_following fetch_following.launch
 ```
-This will launch the aruco ROS package [subscribed to the robot's RGB camera topic] and our motion package.
+This will launch the aruco ROS package [subscribed to the robot's RGB camera topic] and our motion package. **Note: Aruco is only supported for indigo and kinetic ROS distributions**
 
 # Fast Travel
 1. [Installations](https://github.com/sleong1/fetch_following#installations)

@@ -23,8 +23,8 @@ This will launch the aruco ROS package [subscribed to the robot's RGB camera top
     aruco-msgs
 
 # Camera Calibration
-If you are uing Aruco with the simulation, you'll need to calibrate your camera before using it. 
-You can also follow the quick steps below:
+If you are using Aruco with the simulation along with a USB-camera, you'll need to calibrate your camera. 
+You can follow the quick steps below:
 1. To launch the camera, run: 
 ```
 roslaunch fetch_following usb_cam_stream_publisher.launch
@@ -44,19 +44,17 @@ Or you can change them directly in the launch file. Take enough angles till the 
 ```
 Change `markerId:=701 markerSize:=0.1` to match the specs of your artag or change this directly in the launch. For this project, it has already been changed.
 
-Run 
+To view the output run: 
 ```
     rosrun rqt_gui rqt_gui
 ```
-to view the output. If you see a blank screen, do not fear, help is here:
-
+ If you see a blank screen, do not fear, help is here:
 1. Plugins > Visualization > Image View
 2. Then select your topic
-
 The topic where we will see the pose is in: 
-
+```
     /aruco_single/result
-
+```
 Generating more Tags
 ---
 To generate the tag, go to: http://chev.me/arucogen/
